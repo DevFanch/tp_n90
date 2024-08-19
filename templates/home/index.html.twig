@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{
+parent() ~ ' - ' ~ title
+}} {% endblock %}
+
+{% block body %}
+    {{ title }} 
+{% endblock %}
