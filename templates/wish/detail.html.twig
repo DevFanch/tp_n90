@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello WishController!{% endblock %}
+
+{% block body %}
+{# Syntax Emmet : article>h2{title}+p{description} #}
+
+    <article>
+        <h2>{{wish.title | capitalize }}</h2>
+        <p>{{wish.description}}</p>
+    </article>
+{% endblock %}

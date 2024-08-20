@@ -15,4 +15,12 @@ class HomeController extends AbstractController
             'title' => 'Ceci est la page d\'Accueil',
         ]);
     }
+
+    #[Route('/about-us', name: 'app_about')]
+    public function about(): Response
+    {
+        return $this->render('home/about.html.twig', [
+            'title' => 'About Us',
+        ]);
+    }
 }

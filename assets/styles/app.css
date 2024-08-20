@@ -16,12 +16,26 @@ header a {
     margin-right: 5px;
 }
 
+.header-nav a {
+    margin-right: 2rem;
+}
+
 header nav a:hover {
     text-decoration: underline;
 }
 
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 0 10px;
+}
+
 main {
     background-color: #FFF1E6;
+}
+
+main h2 {
+    margin-top: 0;
 }
 
 footer {
