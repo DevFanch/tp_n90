@@ -19,8 +19,13 @@ class HomeController extends AbstractController
     #[Route('/about-us', name: 'app_about')]
     public function about(): Response
     {
+        //  Get datas
+        $data = file_get_contents('../data/team.json');
+        $team = json_decode($data);
+
         return $this->render('home/about.html.twig', [
             'title' => 'About Us',
+            'team' => $team
         ]);
     }
 }

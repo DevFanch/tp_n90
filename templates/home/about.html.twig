@@ -13,5 +13,23 @@ parent() ~ ' - ' ~ title
 	unde vitae voluptates.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ducimus et expedita fuga iure laudantium modi
 	necessitatibus nesciunt non, pariatur quod, velit. Blanditiis dicta earum et libero suscipit unde voluptas?</p>
+    
+    {# firstname,lastname,dateOfBirth,creatorOf,picture,description #}
+    <section>
+        {% for personne in team %}        
+            <article>
+                <h3>{{personne.firstname ~ ' ' ~ personne.lastname}}
+                    {% if personne.firstname is same as 'Fabien' %}
+                        ❤
+                    {% endif %}
+                </h3>
+                <img class="team-picture" src="{{personne.picture}}" alt="{{personne.firstname ~ ' ' ~ personne.lastname}}">
+                <p>{{personne.dateOfBirth | date('d/m/Y') }}</p>
+                <p>{{personne.creatorOf }}</p>
+                <p>{{personne.description }}</p>
+            </article>
+        {% endfor %}
+    </section>
+
 
 {% endblock %}

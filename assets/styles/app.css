@@ -38,6 +38,12 @@ main h2 {
     margin-top: 0;
 }
 
+/* design profil picture 80x80 */
+.team-picture {
+    max-width: 160px;
+    border-radius: 15px;
+}
+
 footer {
     padding: 1.5rem 0;
     text-align: center;
