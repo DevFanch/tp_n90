@@ -7,6 +7,7 @@
 
     <article>
         <h2>{{wish.title | capitalize }}</h2>
+        <p><strong>{{wish.author}}</strong> a créé le {{wish.dateCreated | date('d/m/Y à H:i')}}</p>
         <p>{{wish.description}}</p>
     </article>
 {% endblock %}
