@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Wish;
 use App\Form\WishType;
 use App\Repository\WishRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -42,7 +43,7 @@ class WishController extends AbstractController
     }
 
     #[Route('/create', name: 'create', methods: ['GET', 'POST'])]
-    public function create(Request $request, EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader): Response
     {
         $wish = new Wish();
         $wishForm = $this->createForm(WishType::class, $wish);
@@ -50,6 +51,13 @@ class WishController extends AbstractController
         $wishForm->handleRequest($request);
 
         if ($wishForm->isSubmitted() && $wishForm->isValid()) {
+            // Check File
+            if ($wishForm->get('image')->getData() !== null) {
+                $image = $wishForm->get('image')->getData();
+                $fileName = $fileUploader->upload($image);
+                $wish->setImage($fileName);
+            }
+
             $em->persist($wish);
             $em->flush();
             $this->addFlash('success', 'Idea successfully added !');
@@ -61,5 +69,47 @@ class WishController extends AbstractController
             'title' => 'Add your wishes!',
             'wishForm' => $wishForm
         ]);
+    }
+
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    public function edit(Wish $wish, Request $request, EntityManagerInterface $em, FileUploader $fileUploader): Response
+    {
+        $wishForm = $this->createForm(WishType::class, $wish);
+
+        $wishForm->handleRequest($request);
+
+        if ($wishForm->isSubmitted() && $wishForm->isValid()) {
+            // Check File
+            $image = $wishForm->get('image')->getData();
+            if ($wishForm->has('deleteImage') && $wishForm->get('deleteImage')->getData()) {
+                $fileUploader->delete($wish->getImage());
+                $wish->setImage(null);
+            }
+
+            // Save file
+            if ($image !== null) {
+                $fileName = $fileUploader->upload($image);
+                $wish->setImage($fileName);
+            }
+            $em->flush();
+            $this->addFlash('success', 'Idea successfully updated !');
+
+            return $this->redirectToRoute('wish_detail', ['id' => $wish->getId()]);
+        }
+
+        return $this->render('wish/create.html.twig', [
+            'title' => 'Edit your wishes!',
+            'wishForm' => $wishForm
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: 'delete', methods: ['GET'])]
+    public function delete(Wish $wish, EntityManagerInterface $em): Response
+    {
+        $em->remove($wish);
+        $em->flush();
+        $this->addFlash('success', 'Idea successfully deleted !');
+
+        return $this->redirectToRoute('wish_list');
     }
 }

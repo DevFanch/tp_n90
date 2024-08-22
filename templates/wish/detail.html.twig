@@ -9,5 +9,16 @@
         <h2>{{wish.title | capitalize }}</h2>
         <p><strong>{{wish.author}}</strong> a créé le {{wish.dateCreated | date('d/m/Y à H:i')}}</p>
         <p>{{wish.description}}</p>
+        {% if wish.image %}
+            <div class="card mt-2 mb-2 w-50 m-auto">
+                <img src="{{app_images_wish_directory ~ '/' ~ wish.image}}" alt="{{wish.title}}">
+            </div>
+        {% endif %}
     </article>
+    {# Manage buttons #}
+    <div class="d-flex justify-content-between">
+        <a class="btn btn-info" href="{{ path('wish_edit', {'id': wish.id}) }}">Edit</a>
+        <a class="btn btn-danger" href="{{ path('wish_delete', {'id': wish.id}) }}">Delete</a>
+    </div>
+
 {% endblock %}
