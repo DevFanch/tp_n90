@@ -44,6 +44,41 @@ main h2 {
     border-radius: 15px;
 }
 
+/* Form */
+.alert {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: #a2a232;
+}
+
+.alert-error {
+    background-color: #d4550e;
+}
+
+/* formulaires */
+label {
+    display: block;
+}
+
+input,
+textarea {
+    box-sizing: border-box;
+    width: 50%;
+    margin-bottom: 1rem;
+}
+
+button {
+    padding: 0.5rem 0.7rem;
+    font-family: inherit;
+}
+/* Footer */
 footer {
     padding: 1.5rem 0;
     text-align: center;

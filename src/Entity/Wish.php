@@ -5,7 +5,11 @@ namespace App\Entity;
 use App\Repository\WishRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields: ['title'], message: 'Ce titre existe déjà')]
 #[ORM\Entity(repositoryClass: WishRepository::class)]
 class Wish
 {
@@ -14,12 +18,23 @@ class Wish
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'Veuillez renseigner un titre')]
+    #[Assert\Length(
+        min: 3, max: 255,
+        minMessage: 'Le titre doit contenir au moins 3 caractères',
+        maxMessage: 'Le titre ne doit pas contenir plus de 50 caractères'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Assert\NotBlank(message: 'Veuillez renseigner un auteur')]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'L\'auteur ne doit pas contenir plus de 50 caractères'
+    )]
     #[ORM\Column(length: 50)]
     private ?string $author = null;
 
@@ -28,12 +43,6 @@ class Wish
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreated = null;
-
-    public function __construct()
-    {
-        $this->dateCreated = new \DateTime();
-        $this->isPublished = false;
-    }
 
     public function getId(): ?int
     {
@@ -81,9 +90,10 @@ class Wish
         return $this->isPublished;
     }
 
-    public function setPublished(bool $isPublished): static
+    #[ORM\PrePersist]
+    public function setPublished(): static
     {
-        $this->isPublished = $isPublished;
+        $this->isPublished = true;
 
         return $this;
     }
@@ -93,9 +103,10 @@ class Wish
         return $this->dateCreated;
     }
 
-    public function setDateCreated(\DateTimeInterface $dateCreated): static
+    #[ORM\PrePersist]
+    public function setDateCreated(): static
     {
-        $this->dateCreated = $dateCreated;
+        $this->dateCreated = new \DateTime();
 
         return $this;
     }
