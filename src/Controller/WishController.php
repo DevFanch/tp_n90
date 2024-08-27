@@ -18,10 +18,11 @@ class WishController extends AbstractController
     #[Route('/', name: 'list')]
     public function index(WishRepository $wishR): Response
     {
+        $wishes = $wishR->findPublishedWishesWithCategories();
         return $this->render('wish/list.html.twig', [
             'title' => 'Wish List ',
             // 'wishes' => $wishR->findLastPublished()
-            'wishes' => $wishR->findBy(['isPublished' => true], ['dateCreated' => 'DESC'])
+            'wishes' => $wishes
         ]);
     }
     // #[Route('/{id}', name: 'detail', requirements: ['id' => '\d+'])]

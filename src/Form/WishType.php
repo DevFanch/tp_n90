@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Wish;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
@@ -38,6 +40,12 @@ class WishType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ]
+            ])
+            ->add('category', EntityType::class, [
+                'label' => 'Category',
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'placeholder' => '-- Choose a category --'
             ])
             ->add('image', FileType::class, [
                 'label' => 'Image',

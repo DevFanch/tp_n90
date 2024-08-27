@@ -7,6 +7,7 @@
 
     <article>
         <h2>{{wish.title | capitalize }}</h2>
+        <h3>{{ wish.category.name }}</h3>
         <p><strong>{{wish.author}}</strong> a créé le {{wish.dateCreated | date('d/m/Y à H:i')}}</p>
         <p>{{wish.description}}</p>
         {% if wish.image %}
